@@ -2,21 +2,21 @@
 
 Todos los servidores están montados en Proxmox. Para ello hemos entrado desde la web para configurar la red de los servidores.
 
-![alt text](imagen.png)
+![alt text](capturas/imagen.png)
 
-![alt text](imagen-1.png)
+![alt text](capturas/imagen-1.png)
 
-![alt text](imagen-2.png)
+![alt text](capturas/imagen-2.png)
 
-![alt text](imagen-3.png)
+![alt text](capturas/imagen-3.png)
 
 Despues reiniciar las maquinas para que se apliquen los cambios y cambiar el nombre de los servidores.
 
-![alt text](imagen-4.png)
+![alt text](capturas/imagen-4.png)
 
-![alt text](imagen-5.png)
+![alt text](capturas/imagen-5.png)
 
-![alt text](imagen-6.png)
+![alt text](capturas/imagen-6.png)
 
 ## 1. Arquitectura de Red y Direccionamiento IP
 
@@ -52,53 +52,53 @@ network:
           - 192.168.3.102
 ```
 
-![alt text](imagen-63.png)
+![alt text](capturas/imagen-63.png)
 
-![alt text](imagen-64.png)
+![alt text](capturas/imagen-64.png)
 
 ### 1.2 Acceso SSH a las maquinas
 
 1. Crear las claves publicas y privadas de cada usuario que vaya a acceder+
 
-![alt text](imagen-7.png)
+![alt text](capturas/imagen-7.png)
 
 En este caso cambiar el nombre de quien es y añadir en la carpeta .ssh
 
-![alt text](imagen-8.png)
+![alt text](capturas/imagen-8.png)
 
 Crear la clave en el host para poder acceder:
 
-![alt text](imagen-15.png)
+![alt text](capturas/imagen-15.png)
 
 Añadir la clave de Windows en Linux
 
-![alt text](imagen-10.png)
+![alt text](capturas/imagen-10.png)
 
 Activar opciones para poder conectarse mediante SSH con la clave de cada usuario
 
-![alt text](imagen-11.png)
+![alt text](capturas/imagen-11.png)
 
 Se configura el archivo .config en el host para acceder de forma mas comoda, solo poniendo un alias del servidor:
 
-![alt text](imagen-18.png)
+![alt text](capturas/imagen-18.png)
 
 Y añadir las claves y el archivo config en .ssh del host
 
-![alt text](imagen-20.png)
+![alt text](capturas/imagen-20.png)
 
 Comprobar si funciona la conexion por SSH al server:
 
-![alt text](imagen-17.png)
+![alt text](capturas/imagen-17.png)
 
-![alt text](imagen-24.png)
+![alt text](capturas/imagen-24.png)
 
 Para que el resto del grupo pueda acceder habra que meter todas las claves
 
-![alt text](imagen-22.png)
+![alt text](capturas/imagen-22.png)
 
 Adjunto de la comprobacion desde el PC 4:
 
-![alt text](imagen-23.png)
+![alt text](capturas/imagen-23.png)
 
 ---
 
@@ -106,7 +106,7 @@ Adjunto de la comprobacion desde el PC 4:
 
 1. Cambiar la IP de la red LAN
 
-![alt text](imagen-12.png)
+![alt text](capturas/imagen-12.png)
 
 ### 2.1 Deshabilitación del Servicio DHCP Local
 
@@ -120,7 +120,7 @@ Adjunto de la comprobacion desde el PC 4:
 2. Eliminar las reglas predeterminadas de acceso total (`Default allow LAN to any rule`).
 3. Sincronizar el servidor NTP
 
-![alt text](imagen-25.png)
+![alt text](capturas/imagen-25.png)
 
 
 ### 2.3 Reenvío de Puertos (Port Forwarding) en WAN
@@ -138,13 +138,13 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
 | **dns** | WAN | TCP/UDP | `WAN address` (`172.26.46.53`) | `53 (DNS)` | `192.168.3.101` | `53 (DNS)` |
 | **Pagina web https** | WAN | TCP | `WAN address` (`172.26.46.53`) | `443 (HTTPS)` | `192.168.3.103` | `443 (HTTPS)` |
 
-![alt text](imagen-13.png)
+![alt text](capturas/imagen-13.png)
 
-![alt text](imagen-14.png)
+![alt text](capturas/imagen-14.png)
 
 Y configurar en Servicios del firewall, en el DNS resolvs, host overrides, añadir las webs para que las resuelva:
 
-![alt text](imagen-39.png)
+![alt text](capturas/imagen-39.png)
 
 ---
 
@@ -154,7 +154,7 @@ Y configurar en Servicios del firewall, en el DNS resolvs, host overrides, añad
 
 Instalar bind9 en el servidor maestro
 
-![alt text](imagen-26.png)
+![alt text](capturas/imagen-26.png)
 
 1. **Opciones globales (`/etc/bind/named.conf.options`):**
    Se habilitan las consultas para localhost, la red interna y la red del aula:
@@ -168,7 +168,7 @@ Instalar bind9 en el servidor maestro
        dnssec-validation auto;
    };
    ```
-![alt text](imagen-27.png)
+![alt text](capturas/imagen-27.png)
 
 2. **Declaración de zonas (`/etc/bind/named.conf.local`):**
 
@@ -187,7 +187,7 @@ Instalar bind9 en el servidor maestro
        also-notify { 192.168.3.102; };
    };
    ```
-   ![alt text](imagen-28.png)
+   ![alt text](capturas/imagen-28.png)
 
 
 3. **Archivo de zona directa (`/etc/bind/db.grupo3reto4.eus`):**
@@ -214,7 +214,7 @@ Instalar bind9 en el servidor maestro
    www      IN      A       172.26.46.53
    intranet IN      A       172.16.250.103
    ```
-![alt text](imagen-30.png)
+![alt text](capturas/imagen-30.png)
 
 4. **Archivo de zona inversa (`/etc/bind/db.192.168.3`):**
 
@@ -235,7 +235,7 @@ Instalar bind9 en el servidor maestro
    103     IN      PTR     server3.grupo3reto4.eus.
    104     IN      PTR     server4.grupo3reto4.eus.
    ```
-   ![alt text](imagen-32.png)
+   ![alt text](capturas/imagen-32.png)
 
 5. **Validación y reinicio del servicio:**
 
@@ -246,9 +246,9 @@ Instalar bind9 en el servidor maestro
    sudo systemctl restart bind9
    ```
 
-![alt text](imagen-33.png)
+![alt text](capturas/imagen-33.png)
 
-![alt text](imagen-31.png)
+![alt text](capturas/imagen-31.png)
 
 ### 3.2 Configuración del Servidor DNS Esclavo (`Server 2` - `192.168.3.102`)
 
@@ -267,21 +267,21 @@ Instalar bind9 en el servidor maestro
        masters { 192.168.3.101; };
    };
    ```
-   ![alt text](imagen-34.png)
+   ![alt text](capturas/imagen-34.png)
 
 2. Reiniciar BIND9 (`sudo systemctl restart bind9`) y verificar la transferencia automática de zonas en `/var/cache/bind/`.
 
 3. Comprobaciones de que funcionan bien:
 
-![alt text](imagen-35.png)
+![alt text](capturas/imagen-35.png)
 
-![alt text](imagen-36.png)
+![alt text](capturas/imagen-36.png)
 
 Comprobar la resolucion de nombres:
 
-![alt text](imagen-37.png)
+![alt text](capturas/imagen-37.png)
 
-![alt text](imagen-38.png)
+![alt text](capturas/imagen-38.png)
 
 ---
 
@@ -296,7 +296,7 @@ Comprobar la resolucion de nombres:
    sudo apt install isc-dhcp-server
    ```
 
-   ![alt text](imagen-65.png)
+   ![alt text](capturas/imagen-65.png)
 
 2. Configurar la interfaz donde el servicio escuchará en `/etc/default/isc-dhcp-server`:
 
@@ -305,7 +305,7 @@ Comprobar la resolucion de nombres:
    INTERFACESv6=""
    ```
 
-   ![alt text](imagen-40.png)
+   ![alt text](capturas/imagen-40.png)
 
 3. Definir la red, el rango dinámico y las opciones de red en `/etc/dhcp/dhcpd.conf`:
 
@@ -323,7 +323,7 @@ Comprobar la resolucion de nombres:
    }
    ```
 
-   ![alt text](imagen-42.png)
+   ![alt text](capturas/imagen-42.png)
 
 4. Validar la configuración y reiniciar el servicio:
 
@@ -339,27 +339,27 @@ Comprobar la resolucion de nombres:
    sudo systemctl status isc-dhcp-server
    ```
 
-![alt text](imagen-43.png)
+![alt text](capturas/imagen-43.png)
 
 Para comprobar que funciona bien el failover hay que parar el servicio en el server primario y reiniciar la ip en un cliente, si devuelve la misma que tenia, esta bien
 
-![alt text](imagen-44.png)
+![alt text](capturas/imagen-44.png)
 
-![alt text](imagen-45.png)
+![alt text](capturas/imagen-45.png)
 
-![alt text](imagen-46.png)
+![alt text](capturas/imagen-46.png)
 
 Aun quitando el dhcp del pfsense, funciona:
 
-![alt text](imagen-47.png)
+![alt text](capturas/imagen-47.png)
 
 Teniendo la configuracion de DHCP en el server4 en "true"
 
-![alt text](imagen-48.png)
+![alt text](capturas/imagen-48.png)
 
 Sigue dando la ip asignada:
 
-![alt text](imagen-49.png)
+![alt text](capturas/imagen-49.png)
 
 ---
 
@@ -370,23 +370,23 @@ Sigue dando la ip asignada:
 1. **Personalización del contenido web:**
    Edición del archivo principal `/var/www/html/index.html` con el contenido corporativo de `www.grupo3reto4.eus`.
 
-   ![alt text](imagen-50.png)
+   ![alt text](capturas/imagen-50.png)
 
-   ![alt text](imagen-51.png)
+   ![alt text](capturas/imagen-51.png)
 
 2. **Activar la pagina web**
 
 Crear el archivo de los sitios disponibles
 
-![alt text](imagen-52.png)
+![alt text](capturas/imagen-52.png)
 
 Añadir la configuracion
 
-![alt text](imagen-53.png)
+![alt text](capturas/imagen-53.png)
 
 Activar y reiniciar
 
-![alt text](imagen-54.png)
+![alt text](capturas/imagen-54.png)
 
 
 ### 5.2 Configuración SSL (HTTPS) en el Servidor Intranet (`172.16.250.103`)
@@ -412,19 +412,19 @@ Activar y reiniciar
    SSLCertificateKeyFile   /etc/ssl/private/intranet.key
    ```
 
-   ![alt text](imagen-56.png)
+   ![alt text](capturas/imagen-56.png)
 
 3. Validación con `sudo apache2ctl configtest`.
 
-![alt text](imagen-57.png)
+![alt text](capturas/imagen-57.png)
 
 4. Comprobacion de las distintas webs
 
-![alt text](imagen-66.png)
+![alt text](capturas/imagen-66.png)
 
 5. Instalar el monitorix
 
-![alt text](imagen-61.png)
+![alt text](capturas/imagen-61.png)
 ---
 
 ## 6. Verificación y Acceso desde Equipo Cliente del Aula
@@ -443,10 +443,10 @@ Para resolver los dominios corporativos desde un equipo cliente de la red `172.2
      * `server3` (`192.168.3.103`): `ssh usuario@172.26.46.53 -p 2233`
      * `server4` (`192.168.3.104`): `ssh usuario@172.26.46.53 -p 2234`
 
-![alt text](imagen-59.png)
+![alt text](capturas/imagen-59.png)
 
-![alt text](imagen-60.png)
+![alt text](capturas/imagen-60.png)
 
-![alt text](imagen-62.png)
+![alt text](capturas/imagen-62.png)
 
-![alt text](imagen-67.png)
+![alt text](capturas/imagen-67.png)
