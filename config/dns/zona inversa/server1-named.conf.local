@@ -1,0 +1,12 @@
+zone "3.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.192.168.3";
+    allow-transfer { 192.168.3.102; };
+    also-notify { 192.168.3.102; };
+};
+zone "3.168.192.in-addr.arpa" {
+    type master;
+    file "/etc/bind/db.192.168.3";
+    allow-transfer { 192.168.3.102; };
+    also-notify { 192.168.3.102; };
+};
