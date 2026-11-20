@@ -1,19 +1,15 @@
-# Secretos y claves privadas
-*.key
-*.pem
-*.p12
-*.pfx
-id_rsa
-id_ed25519
-*.env
-.env*
-
-# Copias y datos locales
-*.bak
-*~
-.DS_Store
-Thumbs.db
-
-# Archivos temporales
-*.tmp
-*.log
+# Configuración SSH
+.ssh/config
+.ssh/authorized_keys
+.ssh/known_hosts
+.ssh/known_hosts.old
+id_iker
+id_iker.pub
+id_aritz
+id_aritz.pub
+id_eder
+id_eder.pub
+id_aimar
+id_aimar.pub
+id_ian
+id_ian.pub
