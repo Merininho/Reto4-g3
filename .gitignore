@@ -1,0 +1,19 @@
+# Secretos y claves privadas
+*.key
+*.pem
+*.p12
+*.pfx
+id_rsa
+id_ed25519
+*.env
+.env*
+
+# Copias y datos locales
+*.bak
+*~
+.DS_Store
+Thumbs.db
+
+# Archivos temporales
+*.tmp
+*.log

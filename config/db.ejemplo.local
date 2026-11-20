@@ -1,0 +1,10 @@
+$TTL 604800
+@   IN  SOA ns1.ejemplo.local. admin.ejemplo.local. (
+        2026010101 ; serial
+        604800     ; refresh
+        86400      ; retry
+        2419200    ; expire
+        604800 )   ; negative cache TTL
+
+@       IN  NS  ns1.ejemplo.local.
+ns1     IN  A   PENDIENTE_DNS

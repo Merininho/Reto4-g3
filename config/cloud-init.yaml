@@ -1,0 +1,7 @@
+#cloud-config
+# Configuración base para aprovisionamiento.
+# No incluir usuarios, contraseñas, tokens ni claves privadas.
+hostname: PENDIENTE_HOSTNAME
+package_update: true
+packages:
+  - openssh-server

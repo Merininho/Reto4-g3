@@ -1,0 +1,12 @@
+// Definiciones de zonas DNS locales.
+// Ajustar las rutas de los archivos de zona a las usadas por el servidor.
+
+zone "ejemplo.local" {
+    type primary;
+    file "/var/lib/bind/db.ejemplo.local";
+};
+
+zone "PENDIENTE.in-addr.arpa" {
+    type primary;
+    file "/var/lib/bind/db.PENDIENTE";
+};
