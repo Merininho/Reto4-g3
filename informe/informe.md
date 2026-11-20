@@ -156,8 +156,6 @@ Instalar bind9 en el servidor maestro
 
 ![alt text](imagen-26.png)
 
-![alt text](imagen-27.png)
-
 1. **Opciones globales (`/etc/bind/named.conf.options`):**
    Se habilitan las consultas para localhost, la red interna y la red del aula:
 
@@ -170,6 +168,7 @@ Instalar bind9 en el servidor maestro
        dnssec-validation auto;
    };
    ```
+![alt text](imagen-27.png)
 
 2. **Declaración de zonas (`/etc/bind/named.conf.local`):**
 
@@ -246,9 +245,10 @@ Instalar bind9 en el servidor maestro
    sudo named-checkzone 3.168.192.in-addr.arpa /etc/bind/db.192.168.3
    sudo systemctl restart bind9
    ```
-![alt text](imagen-31.png)
 
 ![alt text](imagen-33.png)
+
+![alt text](imagen-31.png)
 
 ### 3.2 Configuración del Servidor DNS Esclavo (`Server 2` - `192.168.3.102`)
 
@@ -278,6 +278,7 @@ Instalar bind9 en el servidor maestro
 ![alt text](imagen-36.png)
 
 Comprobar la resolucion de nombres:
+
 ![alt text](imagen-37.png)
 
 ![alt text](imagen-38.png)
@@ -294,6 +295,8 @@ Comprobar la resolucion de nombres:
    sudo apt update
    sudo apt install isc-dhcp-server
    ```
+
+   ![alt text](imagen-65.png)
 
 2. Configurar la interfaz donde el servicio escuchará en `/etc/default/isc-dhcp-server`:
 
@@ -347,6 +350,7 @@ Para comprobar que funciona bien el failover hay que parar el servicio en el ser
 ![alt text](imagen-46.png)
 
 Aun quitando el dhcp del pfsense, funciona:
+
 ![alt text](imagen-47.png)
 
 Teniendo la configuracion de DHCP en el server4 en "true"
@@ -371,6 +375,7 @@ Sigue dando la ip asignada:
    ![alt text](imagen-51.png)
 
 2. **Activar la pagina web**
+
 Crear el archivo de los sitios disponibles
 
 ![alt text](imagen-52.png)
@@ -415,7 +420,7 @@ Activar y reiniciar
 
 4. Comprobacion de las distintas webs
 
-![alt text](imagen-58.png)
+![alt text](imagen-66.png)
 
 5. Instalar el monitorix
 
