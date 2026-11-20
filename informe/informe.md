@@ -47,6 +47,9 @@ network:
           - 192.168.3.102
 ```
 
+![alt text](imagen-63.png)
+![alt text](imagen-64.png)
+
 ### 1.2 Acceso SSH a las maquinas
 
 1. Crear las claves publicas y privadas de cada usuario que vaya a acceder
