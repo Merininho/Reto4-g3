@@ -1,4 +1,4 @@
-# Documentación Técnica: Infraestructura de Red, DNS y Servicios Web (Grupo 3 - Reto 4)
+# Documentación Técnica: Servicios de red e Internet (Grupo 3 - Reto 4)
 
 Todos los servidores están montados en Proxmox. Para ello hemos entrado desde la web para configurar la red de los servidores.
 
