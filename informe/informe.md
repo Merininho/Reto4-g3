@@ -448,3 +448,5 @@ Para resolver los dominios corporativos desde un equipo cliente de la red `172.2
 ![alt text](imagen-60.png)
 
 ![alt text](imagen-62.png)
+
+![alt text](imagen-67.png)
