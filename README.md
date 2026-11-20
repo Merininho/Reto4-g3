@@ -22,14 +22,14 @@ La infraestructura está segmentada mediante pfSense. La red interna de servidor
 `192.168.3.0/24`, la red del aula es `172.26.44.0/24` y la red de la intranet es
 `172.16.250.0/24`.
 
-| Equipo/servicio | Rol | Dirección IP | Sistema/servicio |
-|---|---|---|---|---|
-| pfSense (WAN/LAN) | Firewall, NAT y enrutamiento | `172.26.46.53` / `192.168.3.1` | pfSense CE |
-| `server1-g3` | DNS maestro | `192.168.3.101/24` | Ubuntu Server + BIND9 |
-| `server2-g3` | DNS esclavo | `192.168.3.102/24` | Ubuntu Server + BIND9 |
-| `server3-g3` | Web principal y Monitorix | `192.168.3.103/24` | Ubuntu Server + Apache2 |
-| `server4-g3` | Servidor DHCP | `192.168.3.104/24` | Ubuntu Server + ISC DHCP |
-| Servidor intranet | Web de intranet | `172.16.250.103/24` | Ubuntu Server + Apache2 |
+| Equipo / Servicio | Rol | Dirección IP | Sistema / Software |
+|---|---|---|---|
+| **pfSense (WAN / LAN)** | Firewall, NAT y Enrutamiento | `172.26.46.53` (WAN) / `192.168.3.1` (LAN) | pfSense CE |
+| **Server 1 (`server1-g3`)** | Servidor DNS Maestro | `192.168.3.101/24` | Ubuntu Server + BIND9 |
+| **Server 2 (`server2-g3`)** | Servidor DNS Esclavo | `192.168.3.102/24` | Ubuntu Server + BIND9 |
+| **Server 3 (`server3-g3`)** | Servidor Web Principal (`www`) y Monitorix | `192.168.3.103/24` | Ubuntu Server + Apache2 |
+| **Server 4 (`server4-g3`)** | Servidor DHCP | `192.168.3.104/24` | Ubuntu Server + ISC DHCP |
+| **Servidor Intranet** | Servidor Web Intranet (`intranet`) | `172.16.250.103/24` | Ubuntu Server + Apache2 |
 
 Los servidores internos usan como puerta de enlace `192.168.3.1` y como DNS
 `192.168.3.101` y `192.168.3.102`. El servidor DHCP ofrece direcciones
