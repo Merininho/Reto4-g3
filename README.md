@@ -12,7 +12,6 @@ Documentar el diseño, la configuración y las comprobaciones realizadas sobre l
 
 - [`informe/`](./informe): informe técnico, desarrollo y capturas.
 - [`config/`](./config): configuraciones de DHCP, DNS, Netplan/Cloud-Init, Apache y Monitorix.
-- [`scripts/`](./scripts): scripts de enrutamiento y comprobación.
 - [`diagramas/`](./diagramas): mapa lógico de la red.
 - [`gestion.md`](./gestion.md): reparto de tareas.
 
