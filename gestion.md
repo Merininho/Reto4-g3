@@ -2,15 +2,15 @@
 
 | Integrante | Responsabilidades | Estado |
 |---|---|---|
-| Pendiente | Pendiente | Pendiente |
+| Iker Merino | Todas las tareas del proyecto | Completado |
 
 ## Reparto de tareas
 
-- Diseño lógico y direccionamiento: Pendiente.
-- Configuración DHCP: Pendiente.
-- Configuración DNS: Pendiente.
-- Configuración Apache: Pendiente.
-- Configuración Monitorix: Pendiente.
-- Enrutamiento y scripts: Pendiente.
-- Capturas y informe técnico: Pendiente.
-- Revisión final: Pendiente.
+- Diseño lógico y direccionamiento: Iker Merino.
+- Configuración DHCP: Iker Merino.
+- Configuración DNS: Iker Merino.
+- Configuración Apache: Iker Merino.
+- Configuración Monitorix: Iker Merino.
+- Enrutamiento y scripts: Iker Merino.
+- Capturas y informe técnico: Iker Merino.
+- Revisión final: Iker Merino.
