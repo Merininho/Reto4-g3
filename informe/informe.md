@@ -3,14 +3,19 @@
 Todos los servidores están montados en Proxmox. Para ello hemos entrado desde la web para configurar la red de los servidores.
 
 ![alt text](imagen.png)
+
 ![alt text](imagen-1.png)
+
 ![alt text](imagen-2.png)
+
 ![alt text](imagen-3.png)
 
 Despues reiniciar las maquinas para que se apliquen los cambios y cambiar el nombre de los servidores.
 
 ![alt text](imagen-4.png)
+
 ![alt text](imagen-5.png)
+
 ![alt text](imagen-6.png)
 
 ## 1. Arquitectura de Red y Direccionamiento IP
@@ -48,11 +53,13 @@ network:
 ```
 
 ![alt text](imagen-63.png)
+
 ![alt text](imagen-64.png)
 
 ### 1.2 Acceso SSH a las maquinas
 
-1. Crear las claves publicas y privadas de cada usuario que vaya a acceder
+1. Crear las claves publicas y privadas de cada usuario que vaya a acceder+
+
 ![alt text](imagen-7.png)
 
 En este caso cambiar el nombre de quien es y añadir en la carpeta .ssh
@@ -82,6 +89,7 @@ Y añadir las claves y el archivo config en .ssh del host
 Comprobar si funciona la conexion por SSH al server:
 
 ![alt text](imagen-17.png)
+
 ![alt text](imagen-24.png)
 
 Para que el resto del grupo pueda acceder habra que meter todas las claves
@@ -97,6 +105,7 @@ Adjunto de la comprobacion desde el PC 4:
 ## 2. Fase 1: Configuración del Firewall pfSense
 
 1. Cambiar la IP de la red LAN
+
 ![alt text](imagen-12.png)
 
 ### 2.1 Deshabilitación del Servicio DHCP Local
@@ -134,6 +143,7 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
 | **Pagina web https** | WAN | TCP | `WAN address` (`172.26.46.53`) | `443 (HTTPS)` | `192.168.3.103` | `443 (HTTPS)` |
 
 ![alt text](imagen-13.png)
+
 ![alt text](imagen-14.png)
 
 Y configurar en Servicios del firewall, en el DNS resolvs, host overrides, añadir las webs para que las resuelva:
@@ -241,6 +251,7 @@ Instalar bind9 en el servidor maestro
    sudo systemctl restart bind9
    ```
 ![alt text](imagen-31.png)
+
 ![alt text](imagen-33.png)
 
 ### 3.2 Configuración del Servidor DNS Esclavo (`Server 2` - `192.168.3.102`)
@@ -267,10 +278,12 @@ Instalar bind9 en el servidor maestro
 3. Comprobaciones de que funcionan bien:
 
 ![alt text](imagen-35.png)
+
 ![alt text](imagen-36.png)
 
 Comprobar la resolucion de nombres:
 ![alt text](imagen-37.png)
+
 ![alt text](imagen-38.png)
 
 ---
@@ -332,7 +345,9 @@ Comprobar la resolucion de nombres:
 Para comprobar que funciona bien el failover hay que parar el servicio en el server primario y reiniciar la ip en un cliente, si devuelve la misma que tenia, esta bien
 
 ![alt text](imagen-44.png)
+
 ![alt text](imagen-45.png)
+
 ![alt text](imagen-46.png)
 
 Aun quitando el dhcp del pfsense, funciona:
@@ -356,16 +371,20 @@ Sigue dando la ip asignada:
    Edición del archivo principal `/var/www/html/index.html` con el contenido corporativo de `www.grupo3reto4.eus`.
 
    ![alt text](imagen-50.png)
+
    ![alt text](imagen-51.png)
 
 2. **Activar la pagina web**
 Crear el archivo de los sitios disponibles
+
 ![alt text](imagen-52.png)
 
 Añadir la configuracion
+
 ![alt text](imagen-53.png)
 
 Activar y reiniciar
+
 ![alt text](imagen-54.png)
 
 
@@ -424,5 +443,7 @@ Para resolver los dominios corporativos desde un equipo cliente de la red `172.2
      * `server4` (`192.168.3.104`): `ssh usuario@172.26.46.53 -p 2234`
 
 ![alt text](imagen-59.png)
+
 ![alt text](imagen-60.png)
+
 ![alt text](imagen-62.png)
