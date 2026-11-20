@@ -1,5 +1,18 @@
 # Documentación Técnica: Infraestructura de Red, DNS y Servicios Web (Grupo 3 - Reto 4)
 
+Todos los servidores están montados en Proxmox. Para ello hemos entrado desde la web para configurar la red de los servidores.
+
+![alt text](imagen.png)
+![alt text](imagen-1.png)
+![alt text](imagen-2.png)
+![alt text](imagen-3.png)
+
+Despues reiniciar las maquinas para que se apliquen los cambios y cambiar el nombre de los servidores.
+
+![alt text](imagen-4.png)
+![alt text](imagen-5.png)
+![alt text](imagen-6.png)
+
 ## 1. Arquitectura de Red y Direccionamiento IP
 
 La infraestructura está desplegada detrás de un cortafuegos **pfSense** que segmenta la red interna de servidores (`192.168.3.0/24`) respecto a la red del aula (`172.26.44.0/24`) y enruta el tráfico hacia la red de la intranet (`172.16.250.0/24`).
@@ -10,7 +23,7 @@ La infraestructura está desplegada detrás de un cortafuegos **pfSense** que se
 | **Server 1 (`server1-g3`)** | Servidor DNS Maestro | `192.168.3.101/24` | Ubuntu Server + BIND9 |
 | **Server 2 (`server2-g3`)** | Servidor DNS Esclavo | `192.168.3.102/24` | Ubuntu Server + BIND9 |
 | **Server 3 (`server3-g3`)** | Servidor Web Principal (`www`) y Monitorix | `192.168.3.103/24` | Ubuntu Server + Apache2 |
-| **Server 4 (`server4-g3`)** | Servidor Interno | `192.168.3.104/24` | Ubuntu Server |
+| **Server 4 (`server4-g3`)** | Servidor DHCP | `192.168.3.104/24` | Ubuntu Server + ISC DHCP |
 | **Servidor Intranet** | Servidor Web Intranet (`intranet`) | `172.16.250.103/24` | Ubuntu Server + Apache2 |
 
 ### 1.1 Configuración de Red Estática (Netplan)
@@ -34,9 +47,54 @@ network:
           - 192.168.3.102
 ```
 
+### 1.2 Acceso SSH a las maquinas
+
+1. Crear las claves publicas y privadas de cada usuario que vaya a acceder
+![alt text](imagen-7.png)
+
+En este caso cambiar el nombre de quien es y añadir en la carpeta .ssh
+
+![alt text](imagen-8.png)
+
+Crear la clave en el host para poder acceder:
+
+![alt text](imagen-15.png)
+
+Añadir la clave de Windows en Linux
+
+![alt text](imagen-10.png)
+
+Activar opciones para poder conectarse mediante SSH con la clave de cada usuario
+
+![alt text](imagen-11.png)
+
+Se configura el archivo .config en el host para acceder de forma mas comoda, solo poniendo un alias del servidor:
+
+![alt text](imagen-18.png)
+
+Y añadir las claves y el archivo config en .ssh del host
+
+![alt text](imagen-20.png)
+
+Comprobar si funciona la conexion por SSH al server:
+
+![alt text](imagen-17.png)
+![alt text](imagen-24.png)
+
+Para que el resto del grupo pueda acceder habra que meter todas las claves
+
+![alt text](imagen-22.png)
+
+Adjunto de la comprobacion desde el PC 4:
+
+![alt text](imagen-23.png)
+
 ---
 
 ## 2. Fase 1: Configuración del Firewall pfSense
+
+1. Cambiar la IP de la red LAN
+![alt text](imagen-12.png)
 
 ### 2.1 Deshabilitación del Servicio DHCP Local
 
@@ -54,6 +112,9 @@ network:
    * **Navegación Web y Repositorios:** TCP puertos `80, 443`.
    * **Sincronización horaria (NTP):** UDP puerto `123`.
 
+![alt text](imagen-25.png)
+
+
 ### 2.3 Reenvío de Puertos (Port Forwarding) en WAN
 
 En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas de redirección hacia la red interna (`192.168.3.0/24`):
@@ -69,11 +130,24 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
 | **dns** | WAN | TCP/UDP | `WAN address` (`172.26.46.53`) | `53 (DNS)` | `192.168.3.101` | `53 (DNS)` |
 | **Pagina web https** | WAN | TCP | `WAN address` (`172.26.46.53`) | `443 (HTTPS)` | `192.168.3.103` | `443 (HTTPS)` |
 
+![alt text](imagen-13.png)
+![alt text](imagen-14.png)
+
+Y configurar en Servicios del firewall, en el DNS resolvs, host overrides, añadir las webs para que las resuelva:
+
+![alt text](imagen-39.png)
+
 ---
 
 ## 3. Fase 2: Servicio DNS Redundante Maestro-Esclavo (BIND9)
 
 ### 3.1 Configuración del Servidor DNS Maestro (`Server 1` - `192.168.3.101`)
+
+Instalar bind9 en el servidor maestro
+
+![alt text](imagen-26.png)
+
+![alt text](imagen-27.png)
 
 1. **Opciones globales (`/etc/bind/named.conf.options`):**
    Se habilitan las consultas para localhost, la red interna y la red del aula:
@@ -105,6 +179,8 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
        also-notify { 192.168.3.102; };
    };
    ```
+   ![alt text](imagen-28.png)
+
 
 3. **Archivo de zona directa (`/etc/bind/db.grupo3reto4.eus`):**
 
@@ -130,6 +206,7 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
    www      IN      A       172.26.46.53
    intranet IN      A       172.16.250.103
    ```
+![alt text](imagen-30.png)
 
 4. **Archivo de zona inversa (`/etc/bind/db.192.168.3`):**
 
@@ -150,6 +227,7 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
    103     IN      PTR     server3.grupo3reto4.eus.
    104     IN      PTR     server4.grupo3reto4.eus.
    ```
+   ![alt text](imagen-32.png)
 
 5. **Validación y reinicio del servicio:**
 
@@ -159,6 +237,8 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
    sudo named-checkzone 3.168.192.in-addr.arpa /etc/bind/db.192.168.3
    sudo systemctl restart bind9
    ```
+![alt text](imagen-31.png)
+![alt text](imagen-33.png)
 
 ### 3.2 Configuración del Servidor DNS Esclavo (`Server 2` - `192.168.3.102`)
 
@@ -177,48 +257,116 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
        masters { 192.168.3.101; };
    };
    ```
+   ![alt text](imagen-34.png)
 
 2. Reiniciar BIND9 (`sudo systemctl restart bind9`) y verificar la transferencia automática de zonas en `/var/cache/bind/`.
 
+3. Comprobaciones de que funcionan bien:
+
+![alt text](imagen-35.png)
+![alt text](imagen-36.png)
+
+Comprobar la resolucion de nombres:
+![alt text](imagen-37.png)
+![alt text](imagen-38.png)
+
 ---
 
-## 4. Fase 3: Servidores Web Apache2 y Cifrado SSL/TLS (HTTPS)
+## 4. Fase 3: Servicio DHCP (ISC DHCP Server)
 
-### 4.1 Despliegue Web Principal y SSL en `Server 3` (`192.168.3.103`)
+### 4.1 Configuración del Servidor DHCP (`Server 4` - `192.168.3.104`)
+
+1. Instalar el servidor DHCP en el servidor asignado:
+
+   ```bash
+   sudo apt update
+   sudo apt install isc-dhcp-server
+   ```
+
+2. Configurar la interfaz donde el servicio escuchará en `/etc/default/isc-dhcp-server`:
+
+   ```text
+   INTERFACESv4="eth0"
+   INTERFACESv6=""
+   ```
+
+   ![alt text](imagen-40.png)
+
+3. Definir la red, el rango dinámico y las opciones de red en `/etc/dhcp/dhcpd.conf`:
+
+   ```text
+   default-lease-time 600;
+   max-lease-time 7200;
+
+   option domain-name "grupo3reto4.eus";
+   option domain-name-servers 192.168.3.101, 192.168.3.102;
+
+   subnet 192.168.3.0 netmask 255.255.255.0 {
+       range 192.168.3.150 192.168.3.200;
+       option routers 192.168.3.1;
+       option broadcast-address 192.168.3.255;
+   }
+   ```
+
+   ![alt text](imagen-42.png)
+
+4. Validar la configuración y reiniciar el servicio:
+
+   ```bash
+   sudo dhcpd -t -cf /etc/dhcp/dhcpd.conf
+   sudo systemctl restart isc-dhcp-server
+   sudo systemctl enable isc-dhcp-server
+   ```
+
+5. Comprobar el estado del servicio y la concesión de direcciones:
+
+   ```bash
+   sudo systemctl status isc-dhcp-server
+   ```
+
+![alt text](imagen-43.png)
+
+Para comprobar que funciona bien el failover hay que parar el servicio en el server primario y reiniciar la ip en un cliente, si devuelve la misma que tenia, esta bien
+
+![alt text](imagen-44.png)
+![alt text](imagen-45.png)
+![alt text](imagen-46.png)
+
+Aun quitando el dhcp del pfsense, funciona:
+![alt text](imagen-47.png)
+
+Teniendo la configuracion de DHCP en el server4 en "true"
+
+![alt text](imagen-48.png)
+
+Sigue dando la ip asignada:
+
+![alt text](imagen-49.png)
+
+---
+
+## 5. Fase 4: Servidores Web Apache2 y Cifrado SSL/TLS (HTTPS)
+
+### 5.1 Despliegue Web Principal y SSL en `Server 3` (`192.168.3.103`)
 
 1. **Personalización del contenido web:**
    Edición del archivo principal `/var/www/html/index.html` con el contenido corporativo de `www.grupo3reto4.eus`.
 
-2. **Activación de SSL y generación de certificado autofirmado:**
+   ![alt text](imagen-50.png)
+   ![alt text](imagen-51.png)
 
-   ```bash
-   sudo a2enmod ssl
-   sudo a2ensite default-ssl
-   sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-     -keyout /etc/ssl/private/grupo3reto4.key \
-     -out /etc/ssl/certs/grupo3reto4.crt \
-     -subj "/C=ES/ST=Bizkaia/L=Bilbao/O=Grupo3/CN=www.grupo3reto4.eus"
-   ```
+2. **Activar la pagina web**
+Crear el archivo de los sitios disponibles
+![alt text](imagen-52.png)
 
-3. **Configuración del VirtualHost (`/etc/apache2/sites-available/default-ssl.conf`):**
+Añadir la configuracion
+![alt text](imagen-53.png)
 
-   ```apache
-   ServerName www.grupo3reto4.eus
-   ServerAlias grupo3reto4.eus
-   DocumentRoot /var/www/html
+Activar y reiniciar
+![alt text](imagen-54.png)
 
-   SSLCertificateFile      /etc/ssl/certs/grupo3reto4.crt
-   SSLCertificateKeyFile   /etc/ssl/private/grupo3reto4.key
-   ```
 
-   Validación y reinicio de Apache2:
-
-   ```bash
-   sudo apache2ctl configtest
-   sudo systemctl restart apache2
-   ```
-
-### 4.2 Configuración SSL (HTTPS) en el Servidor Intranet (`172.16.250.103`)
+### 5.2 Configuración SSL (HTTPS) en el Servidor Intranet (`172.16.250.103`)
 
 1. **Activación del módulo SSL y creación del certificado:**
 
@@ -241,11 +389,22 @@ En **Firewall > NAT > Port Forward**, se han configurado las siguientes reglas d
    SSLCertificateKeyFile   /etc/ssl/private/intranet.key
    ```
 
-3. Validación con `sudo apache2ctl configtest` y reinicio con `sudo systemctl restart apache2`.
+   ![alt text](imagen-56.png)
 
+3. Validación con `sudo apache2ctl configtest`.
+
+![alt text](imagen-57.png)
+
+4. Comprobacion de las distintas webs
+
+![alt text](imagen-58.png)
+
+5. Instalar el monitorix
+
+![alt text](imagen-61.png)
 ---
 
-## 5. Verificación y Acceso desde Equipo Cliente del Aula
+## 6. Verificación y Acceso desde Equipo Cliente del Aula
 
 Para resolver los dominios corporativos desde un equipo cliente de la red `172.26.44.0/24` sin modificar el archivo `hosts`:
 
@@ -260,3 +419,7 @@ Para resolver los dominios corporativos desde un equipo cliente de la red `172.2
      * `server2` (`192.168.3.102`): `ssh usuario@172.26.46.53 -p 2232`
      * `server3` (`192.168.3.103`): `ssh usuario@172.26.46.53 -p 2233`
      * `server4` (`192.168.3.104`): `ssh usuario@172.26.46.53 -p 2234`
+
+![alt text](imagen-59.png)
+![alt text](imagen-60.png)
+![alt text](imagen-62.png)

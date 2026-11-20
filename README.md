@@ -1,5 +1,7 @@
 # Reto4-g3
 
+Todos los servidores están montados en Proxmox.
+
 Documentación del proyecto de redes del grupo 3.
 
 ## Objetivo
