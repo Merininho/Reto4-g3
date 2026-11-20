@@ -118,11 +118,7 @@ Adjunto de la comprobacion desde el PC 4:
 
 1. Acceder a **Firewall > Rules > LAN**.
 2. Eliminar las reglas predeterminadas de acceso total (`Default allow LAN to any rule`).
-3. Crear reglas explícitas de paso (`Pass`) desde `LAN net` (`192.168.3.0/24`) limitadas exclusivamente a los puertos operativos necesarios:
-   * **Administración pfSense:** TCP puertos `80, 443` hacia `LAN address`.
-   * **Resolución DNS:** TCP/UDP puerto `53`.
-   * **Navegación Web y Repositorios:** TCP puertos `80, 443`.
-   * **Sincronización horaria (NTP):** UDP puerto `123`.
+3. Sincronizar el servidor NTP
 
 ![alt text](imagen-25.png)
 
